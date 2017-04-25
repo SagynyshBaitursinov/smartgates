@@ -1,7 +1,8 @@
 # smartgates
-####### A play framework 1.x application. The app makes it easier to process requests to visit closed institutions. Users submit their requests to visit the place. Administrators decide whether to invite the user or not. Users get email notifications about the decision.
-####### In order to submit the request go to "/"
-####### In order to see the admin panel go to "/administration/login"
+
+###### A play framework 1.x application. The app makes it easier to process requests to visit closed institutions. Users submit their requests to visit the place. Administrators decide whether to invite the user or not. Users get email notifications about the decision.
+###### In order to submit the request go to "/"
+###### In order to see the admin panel go to "/administration/login"
 
 ### To run
 ``sh

@@ -1,0 +1,33 @@
+#{extends 'main.html'/}
+#{set 'moreStyles'}
+<link rel="stylesheet" type="text/css" href="@{'/public/bootstrap-3.3.5-dist/css/datatables.min.css'}"/>
+#{/set}
+#{set 'moreScripts'}
+<script type="text/javascript" src="@{'/public/bootstrap-3.3.5-dist/js/datatables.min.js'}"></script>
+#{/set}
+<h1 style="text-align: center; text-transform: uppercase; margin-bottom: 20px;">Rejected requests</h1>
+<div class="container" style="width: inherit;">
+    <table id="table" class="table table-striped table-bordered table-hover" cellspacing="0" width="100%">
+        <thead>
+        <tr style="text-transform: capitalize;">
+            <th style="width: 50px">Id</th>
+            <th>Fullname</th>
+            <th>Reason</th>
+            <th style="width: 170px">Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        #{list items:requests, as:'request'}
+        <tr>
+            <td>${request.id}</td>
+            <td>
+                <p><a href="@{Administration.overview(request.id)}">${request.fullname}</a></p>
+            </td>
+            <td>${request.reason}</td>
+            <td>${request.getStringDate()}</td>
+        </tr>
+        #{/list}
+        </tbody>
+    </table>
+</div>
+

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>CODE Smartgates</title>
+    <link rel="stylesheet" media="screen" href="@{'/public/stylesheets/main.css'}">
+    <link rel="stylesheet" href="@{'/public/bootstrap-3.3.5-dist/css/bootstrap.min.css'}">
+    <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
+</head>
+<body>
+    <div class="container">
+        <form class="form-signin" action="@{Administration.authorize()}" method="post">
+            <h2 class="form-signin-heading">Sign in</h2>
+            <label for="username" class="sr-only">Login</label>
+            <input type="text" id="username" name="username" class="form-control" placeholder="Login" required="" autofocus="">
+            <label for="inputPassword" class="sr-only">Password</label>
+            <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required="">
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
+        </form>
+    </div>
+</body>
+</html>
+
+<style>
+
+    .btn-primary {
+        background-color: #1F1A17;
+        border-color: #1F1A17;
+    }
+
+    .btn-primary:hover {
+        background-color: #333333;
+        border-color: #333333;
+    }
+
+    .btn-primary:focus {
+        background-color: #333333;
+        border-color: #333333;
+    }
+
+    .btn-primary:active:focus {
+        background-color: #333333;
+        border-color: #333333;
+    }
+
+    body {
+        padding-top: 40px;
+        padding-bottom: 40px;
+        background-color: #eee;
+    }
+    .form-signin-heading {
+        text-align: center;
+    }
+    .form-signin {
+        max-width: 330px;
+        padding: 15px;
+        margin: 0 auto;
+    }
+    .form-signin .form-signin-heading,
+    .form-signin .checkbox {
+        margin-bottom: 10px;
+    }
+    .form-signin .checkbox {
+        font-weight: normal;
+    }
+    .form-signin .form-control {
+        position: relative;
+        height: auto;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        padding: 10px;
+        font-size: 16px;
+    }
+    .form-signin .form-control:focus {
+        z-index: 2;
+    }
+    .form-signin input[type="email"] {
+        margin-bottom: -1px;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+    .form-signin input[type="password"] {
+        margin-bottom: 10px;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+    }
+</style>

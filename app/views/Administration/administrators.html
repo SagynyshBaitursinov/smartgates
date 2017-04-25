@@ -1,0 +1,42 @@
+#{extends 'main.html'/}
+
+#{set 'moreStyles'}
+<link rel="stylesheet" type="text/css" href="@{'/public/bootstrap-3.3.5-dist/css/datatables.min.css'}"/>
+#{/set}
+#{set 'moreScripts'}
+<script type="text/javascript" src="@{'/public/bootstrap-3.3.5-dist/js/datatables.min.js'}"></script>
+#{/set}
+
+<h1 style="text-align: center; text-transform: uppercase; margin-bottom: 20px;">List of administrators</h1>
+<div class="container" style="width: inherit;">
+    <table id="table1" class="table table-striped table-bordered table-hover" cellspacing="0" width="100%">
+        <thead>
+        <tr style="text-transform: capitalize;">
+            <th>Name</th>
+        </tr>
+        </thead>
+        <tbody>
+        #{list items:admins, as:'admin'}
+        <tr>
+            <td>${admin.login}</td>
+        </tr>
+        #{/list}
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript" charset="utf-8">
+    $(document).ready(function() {
+        $('#table1').DataTable();
+
+        $("#myModal").on('hidden.bs.modal', function (){
+            $("body").removeAttr("style");
+        });
+    });
+
+    $('a[name=delete]').click(function (e){
+        if(!confirm("&{'label.want.to.delete'}")){
+            e.preventDefault();
+        }
+    });
+</script>

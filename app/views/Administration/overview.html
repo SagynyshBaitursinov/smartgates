@@ -1,0 +1,36 @@
+#{extends 'main.html'/}
+<style>
+    .buttons {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    .status {
+        margin-bottom: 30px;
+    }
+    a {
+        margin: 10px;
+    }
+</style>
+<h1 style="text-align: center; text-transform: uppercase; margin-bottom: 20px;">${item.fullname}</h1>
+<div>
+    <b>Submitted: </b>
+    <span>${item.getStringDate()}</span>
+</div>
+<div class="reason">
+    <b>Reason:</b>
+    <div>
+        ${item.reason}
+    </div>
+</div>
+
+#{if item.status.toString() == "pending"}
+<div class="buttons">
+    <a href="@{Administration.accept(item.id)}" class="btn btn-primary">Accept</a><a href="@{Administration.reject(item.id)}" class="btn btn-danger">Reject</a>
+</div>
+#{/if}
+#{else}
+<div class="status">
+    <b>Status:</b>
+    <span>${item.status.toString()}</span>
+</div>
+#{/else}

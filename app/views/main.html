@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>CODE Smartgates</title>
+        <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
+        <meta charset="UTF-8">
+        <link rel="stylesheet" media="screen" href="@{'/public/stylesheets/main.css'}">
+        <link rel="stylesheet" href="@{'/public/bootstrap-3.3.5-dist/css/bootstrap.min.css'}">
+        <link rel="stylesheet" href="@{'/public/bootstrap-3.3.5-dist/css/simple-sidebar.css'}">
+        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+        #{get 'moreStyles' /}
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g=" crossorigin="anonymous"></script>
+        <script src="@{'/public/bootstrap-3.3.5-dist/js/bootstrap.min.js'}" type="text/javascript"></script>
+        #{get 'moreScripts' /}
+    </head>
+    <body>
+        <div id="wrapper">
+            <!-- Sidebar -->
+            <div id="sidebar-wrapper">
+                <ul class="sidebar-nav" style="text-transform: uppercase;">
+                    <li class="sidebar-brand" style="font-family: 'Oswald', sans-serif;">
+                        <h1>
+                            <a href="@{Application.index()}" style="font-size: 30px; color: white; font-family: 'Roboto', sans-serif;"><img style="height: 30px;" src="https://code.berlin/assets/img/logo.png?1484047690000"></a>
+                        </h1>
+                    </li>
+                    <li>
+                        <a href="@{Administration.pending()}">Pending requests</a>
+                    </li>
+                    <li>
+                        <a href="@{Administration.accepted()}">Accepted requests</a>
+                    </li>
+                    <li>
+                        <a href="@{Administration.rejected()}">Rejected requests</a>
+                    </li>
+                    <li>
+                        <a href="@{Administration.administrators()}">Administrators</a>
+                    </li>
+                </ul>
+                <a href="#" data-toggle="modal" data-target="#passwordModal"><button class="btn btn-default btn-sm" style="position: absolute; bottom: 10px; left: 10px; background-color: transparent; color: #ffffff;">Change password</button></a>
+                <a href="@{Administration.logout()}"><button class="btn btn-default btn-sm" style="position: absolute; bottom: 10px; right: 10px; background-color: transparent; color: #ffffff;">Logout</button></a>
+            </div>
+            <!-- /#sidebar-wrapper -->
+
+            <!-- Page Content -->
+            <div id="page-content-wrapper">
+                <div class="container-fluid">
+                    #{doLayout /}
+                    <button type="button" class="btn btn-default btn-sm" id="menu-toggle">
+                        <span class="glyphicon glyphicon-chevron-left"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <script>
+            $("#menu-toggle").click(function(e) {
+                e.preventDefault();
+                $("#wrapper").toggleClass("toggled");
+                $("#menu-toggle > .glyphicon").toggleClass("glyphicon-chevron-left");
+                $("#menu-toggle > .glyphicon").toggleClass("glyphicon-chevron-right");
+            });
+
+            $(document).ready(function (){
+                $("#table_previous a").html("&{'label.prev'}");
+                $("#table_next a").html("&{'label.next'}");
+                $("#table_paginate").click(function (){
+                    $("#table_previous a").html("&{'label.prev'}");
+                    $("#table_next a").html("&{'label.next'}");
+                });
+
+                $("#passwordModal").on('hidden.bs.modal', function (){
+                    $("body").removeAttr("style");
+                });
+
+                $("#passwordForm").submit(function(e) {
+                    var password1 = $("input[name=password1]").val();
+                    var password2 = $("input[name=password2]").val();
+                    if (password1 != password2) {
+                        alert("&{'alert.different.passwords'}");
+                        e.preventDefault();
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>
+<div id="passwordModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" style="text-transform: uppercase;">New password</h4>
+            </div>
+            <div class="modal-body">
+                <form id="passwordForm" class="form-horizontal col-sm-12" action="@{Administration.changePassword()}">
+                    <input type="text" name="id" style="display: none;">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" style="text-transform: capitalize;">Password<span class="required">*</span></label>
+                        <div class="col-sm-5">
+                            <input type="password" class="form-control" name="password1" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" style="text-transform: capitalize;">Once again<span class="required">*</span></label>
+                        <div class="col-sm-5">
+                            <input type="password" class="form-control" name="password2" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-info pull-right">Submit</button>
+                    <button type="button" class="btn btn-default pull-right" style="margin-right: 10px;" data-dismiss="modal">Cancel</button>
+                </form>
+            </div>
+            <div class="modal-footer" style="visibility:hidden;">
+            </div>
+        </div>
+    </div>
+</div>

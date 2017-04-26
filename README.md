@@ -13,5 +13,6 @@ play start --%prod
 ###### Folder where generated QRcodes are going to be stored "/opt/smartgates" should exist and the user should have permissions to write and read in that directory
 
 ### Todo:
-- The external mobile application that verifies QRcodes needs to be developed
-- Make an API for QR code verification
+- Graphical interface for choosing appointment time has to be implemented
+- Visitors' photo upload needs to be implemented
+- The external mobile application that verifies QRcodes needs to be developed (QRCode verification api is ready)

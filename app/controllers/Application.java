@@ -1,6 +1,8 @@
 package controllers;
 
 import com.google.gson.Gson;
+import dao.RequestDao;
+import dto.RequestDto;
 import models.RecaptchaResponse;
 import models.Request;
 import play.mvc.Controller;
@@ -27,7 +29,7 @@ public class Application extends Controller {
             flash.put("error", "error");
             index();
         }
-        if (!validate("secret=6LfMkB4UAAAAAGnvidjg08OXWikCgsyItbVy6nqX&response=" + gRecaptchaResponse)) {
+        if (!recaptchaIsValid("secret=6LfMkB4UAAAAAGnvidjg08OXWikCgsyItbVy6nqX&response=" + gRecaptchaResponse)) {
             flash.put("error", "error");
             index();
         }
@@ -42,6 +44,14 @@ public class Application extends Controller {
         index();
     }
 
+    public static void verify(String uuid) {
+        Request item = RequestDao.findRequestByUUID(uuid);
+        if (item == null) {
+            notFound();
+        }
+        renderJSON(new RequestDto(item));
+    }
+
     public static void image(String name) {
         File file = new File("/opt/smartgates/" + name);
         if (file.exists()) {
@@ -51,7 +61,7 @@ public class Application extends Controller {
         }
     }
 
-    private static boolean validate(String urlParameters) {
+    private static boolean recaptchaIsValid(String urlParameters) {
         HttpsURLConnection connection = null;
         try {
             URL url = new URL("https://www.google.com/recaptcha/api/siteverify");

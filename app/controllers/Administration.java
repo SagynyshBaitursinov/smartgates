@@ -1,10 +1,9 @@
 package controllers;
 
-import dto.RequestDto;
+import dao.RequestDao;
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
-import play.db.jpa.JPA;
 import play.i18n.Lang;
 import play.mvc.*;
 
@@ -139,17 +138,17 @@ public class Administration extends Controller {
     }
 
     public static void pending() {
-        List<Request> requests = RequestDto.getRequestsByStatus(Request.Status.pending);
+        List<Request> requests = RequestDao.getRequestsByStatus(Request.Status.pending);
         render(requests);
     }
 
     public static void rejected() {
-        List<Request> requests = RequestDto.getRequestsByStatus(Request.Status.rejected);
+        List<Request> requests = RequestDao.getRequestsByStatus(Request.Status.rejected);
         render(requests);
     }
 
     public static void accepted() {
-        List<Request> requests = RequestDto.getRequestsByStatus(Request.Status.accepted);
+        List<Request> requests = RequestDao.getRequestsByStatus(Request.Status.accepted);
         render(requests);
     }
 
@@ -180,7 +179,7 @@ public class Administration extends Controller {
         httpEmail.addTo(email);
         httpEmail.setFrom("code.smartgates@gmail.com", "Code Smartgates");
         httpEmail.setSubject("Your request to Smartgates");
-        httpEmail.setHtmlMsg("<center><p>Hello, " + name + "!</p><p>Your request is accepted. Show the qr code to our security guard</p><div><img src=\"http://138.68.109.140/application/image?name=" + filename + "\"></div></center>");
+        httpEmail.setHtmlMsg("<center><p>Hello, " + name + "!</p><p>Your request is accepted. On the day of the appointment show the QR code below to our security guard.</p><div><img src=\"http://138.68.109.140/application/image?name=" + filename + "\"></div><div>Best regards, Smartgates Administration</div></center>");
         httpEmail.send();
     }
 }

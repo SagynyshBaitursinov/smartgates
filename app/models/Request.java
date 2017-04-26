@@ -40,6 +40,9 @@ public class Request extends GenericModel {
     @Enumerated(EnumType.STRING)
     public Status status;
 
+    @Column(name="uuid_")
+    public String uuid;
+
     @Transient
     public String getStringDate() {
         if (date != null) {

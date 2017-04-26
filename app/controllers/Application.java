@@ -6,10 +6,7 @@ import models.Request;
 import play.mvc.Controller;
 
 import javax.net.ssl.HttpsURLConnection;
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URL;
 import java.util.Date;
 
@@ -43,6 +40,15 @@ public class Application extends Controller {
         request.save();
         flash.put("success", "success");
         index();
+    }
+
+    public static void image(String name) {
+        File file = new File("/opt/smartgates/" + name);
+        if (file.exists()) {
+            renderBinary(file);
+        } else {
+            notFound();
+        }
     }
 
     private static boolean validate(String urlParameters) {

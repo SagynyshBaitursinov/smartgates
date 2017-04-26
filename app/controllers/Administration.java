@@ -10,8 +10,10 @@ import play.mvc.*;
 
 import models.*;
 import utils.Hash;
+import utils.QRGenerator;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by sagynysh on 4/24/17.
@@ -44,6 +46,10 @@ public class Administration extends Controller {
             admin = Admin.findById(Long.parseLong(id));
         }
         return admin;
+    }
+
+    public static void index() {
+        pending();
     }
 
     public static void login() {
@@ -105,12 +111,16 @@ public class Administration extends Controller {
         if (item == null || !item.status.equals(Request.Status.pending)) {
             pending();
         }
+        String uuid = UUID.randomUUID().toString().substring(0, 7);
+        try {
+            String fileName = QRGenerator.generate(uuid);
+            sendEmail(item.email, item.fullname, fileName);
+        } catch (Exception e) {
+            overview(id);
+        }
+        item.uuid = uuid;
         item.status = Request.Status.accepted;
         item.save();
-        try {
-            sendEmail(true, item.email, item.fullname);
-        } catch (EmailException e) {
-        }
         overview(id);
     }
 
@@ -122,7 +132,7 @@ public class Administration extends Controller {
         item.status = Request.Status.rejected;
         item.save();
         try {
-            sendEmail(false, item.email, item.fullname);
+            sendEmail(item.email, item.fullname);
         } catch (EmailException e) {
         }
         overview(id);
@@ -148,7 +158,7 @@ public class Administration extends Controller {
         render(admins);
     }
 
-    private static void sendEmail(boolean accepted, String email, String name) throws EmailException {
+    private static void sendEmail(String email, String name) throws EmailException {
         HtmlEmail httpEmail = new HtmlEmail();
         httpEmail.setHostName("smtp.gmail.com");
         httpEmail.setSmtpPort(587);
@@ -157,11 +167,20 @@ public class Administration extends Controller {
         httpEmail.addTo(email);
         httpEmail.setFrom("code.smartgates@gmail.com", "Code Smartgates");
         httpEmail.setSubject("Your request to Smartgates");
-        if (accepted) {
-            httpEmail.setHtmlMsg("<center><p>Hello, " + name + "!</p><p>Your request is accepted.</p></center>");
-        } else {
-            httpEmail.setHtmlMsg("<center><p>Hello, " + name + "!</p><p>Your request is not accepted.</p></center>");
-        }
+        httpEmail.setHtmlMsg("<center><p>Hello, " + name + "!</p><p>Your request is not accepted. Please, try again.</p></center>");
+        httpEmail.send();
+    }
+
+    private static void sendEmail(String email, String name, String filename) throws EmailException {
+        HtmlEmail httpEmail = new HtmlEmail();
+        httpEmail.setHostName("smtp.gmail.com");
+        httpEmail.setSmtpPort(587);
+        httpEmail.setAuthenticator(new DefaultAuthenticator("code.smartgates@gmail.com", "qwerasdf1234"));
+        httpEmail.setSSLOnConnect(true);
+        httpEmail.addTo(email);
+        httpEmail.setFrom("code.smartgates@gmail.com", "Code Smartgates");
+        httpEmail.setSubject("Your request to Smartgates");
+        httpEmail.setHtmlMsg("<center><p>Hello, " + name + "!</p><p>Your request is accepted. Show the qr code to our security guard</p><div><img src=\"http://138.68.109.140/application/image?name=" + filename + "\"></div></center>");
         httpEmail.send();
     }
 }
